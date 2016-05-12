@@ -1,0 +1,53 @@
+install.packages("foreign")
+require (foreign)
+install.packages("fpp")
+library (fpp)
+install.packages("forecast")
+require(forecast)
+lab<- read.csv("C:\\Users\\SALA-C27\\Documents\\asa.csv") ##tasa de asalariados
+asa<-ts(lab [,1], start=2005, frequency=4)
+la<- read.csv("C:\\Users\\SALA-C27\\Documents\\par.csv")### tasa de participacion
+par<-ts(la [,1], start=2005, frequency=4)
+mod1<- ses(asa,alpha = 0.1, initial = "simple", h=4)
+mod2<- ses(asa,alpha = 0.6, initial = "simple", h=4)
+mod3<- ses(asa,alpha = .9, initial = "simple", h=4)
+plot(mod1,plot.conf=FALSE, ylab="tasas", xlab="Año", main=" ", fcol="white", type="o")
+lines(fitted(mod1), col="blue", type="o")
+lines(fitted(mod2), col="red", type="o")
+lines(fitted(mod3), col="green", type="o")
+lines(mod1$mean, col="blue", type="o")
+lines(mod2$mean, col="red", type="o")
+lines(mod3$mean, col="green", type="o")
+legend("topleft",lty=1, col=c(1,"blue","red","green"), 
+       c("data", expression(alpha == 0.1), expression(alpha == 0.6),
+         expression(alpha == .9)), pch=1)
+
+
+
+a<-accuracy(mod1)
+b<-accuracy(mod2)
+c<-accuracy(mod3)
+a
+b
+c
+
+
+modp1<- ses(par,alpha = 0.0001, initial = "simple", h=4)
+modp2<- ses(par,alpha = 0.5, initial = "simple", h=4)
+modp3<- ses(par,alpha = .987, initial = "simple", h=4)
+plot(modp1,plot.conf=FALSE, ylab="tasas", xlab="Año", main=" ", fcol="white", type="o")
+lines(fitted(modp1), col="blue", type="o")
+lines(fitted(modp2), col="red", type="o")
+lines(fitted(modp3), col="green", type="o")
+lines(modp1$mean, col="blue", type="o")
+lines(modp2$mean, col="red", type="o")
+lines(modp3$mean, col="green", type="o")
+legend("topleft",lty=1, col=c(1,"blue","red","green"), 
+       c("data", expression(alpha == 0.0001), expression(alpha == 0.5),
+         expression(alpha == .987)), pch=1)
+ap<-accuracy(mod1)
+bp<-accuracy(mod2)
+cp<-accuracy(mod3)
+ap
+bp
+cp
